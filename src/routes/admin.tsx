@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles, useRoleGuard } from "@/hooks/useRoleGuard";
-import { COMMUNITY_ROOM, ngoRoom, youtubeId } from "@/lib/app";
+import { COMMUNITY_ROOM, adminRoom, ngoRoom, youtubeId } from "@/lib/app";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -52,6 +52,7 @@ function AdminPage() {
   }
 
   const ngos = profiles.filter((p) => p.role === "ngo");
+  const students = profiles.filter((p) => p.role === "student");
 
   return (
     <div className="min-h-screen bg-background">
@@ -61,9 +62,10 @@ function AdminPage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-8">
         <h1 className="text-2xl font-bold tracking-tight">Admin console</h1>
         <Tabs defaultValue="projects" className="mt-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="videos">Skill videos</TabsTrigger>
+            <TabsTrigger value="students">Student chats</TabsTrigger>
             <TabsTrigger value="chat">Community chat</TabsTrigger>
             <TabsTrigger value="ngo">NGO chats</TabsTrigger>
           </TabsList>
@@ -73,6 +75,15 @@ function AdminPage() {
           </TabsContent>
           <TabsContent value="videos" className="mt-6">
             <VideosTab adminId={userId} />
+          </TabsContent>
+          <TabsContent value="students" className="mt-6">
+            <DirectChats
+              adminId={userId}
+              people={students}
+              names={names}
+              emptyLabel="No students registered yet."
+              roomFor={adminRoom}
+            />
           </TabsContent>
           <TabsContent value="chat" className="mt-6">
             <div className="h-[calc(100vh-16rem)] min-h-[28rem]">
@@ -85,7 +96,13 @@ function AdminPage() {
             </div>
           </TabsContent>
           <TabsContent value="ngo" className="mt-6">
-            <NgoChats adminId={userId} ngos={ngos} names={names} />
+            <DirectChats
+              adminId={userId}
+              people={ngos}
+              names={names}
+              emptyLabel="No NGOs registered yet."
+              roomFor={ngoRoom}
+            />
           </TabsContent>
         </Tabs>
       </main>
@@ -233,22 +250,28 @@ function VideosTab({ adminId }: { adminId: string }) {
   );
 }
 
-function NgoChats({
+type ChatPerson = { id: string; full_name: string; email: string; organisation: string | null };
+
+function DirectChats({
   adminId,
-  ngos,
+  people,
   names,
+  emptyLabel,
+  roomFor,
 }: {
   adminId: string;
-  ngos: { id: string; full_name: string; email: string; organisation: string | null }[];
+  people: ChatPerson[];
   names: Record<string, string>;
+  emptyLabel: string;
+  roomFor: (id: string) => string;
 }) {
   const [active, setActive] = useState<string | null>(null);
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[16rem_1fr]">
+    <div className="grid gap-4 lg:grid-cols-[18rem_1fr]">
       <div className="space-y-2 rounded-2xl border border-border bg-card p-3">
-        {ngos.length === 0 ? <p className="p-2 text-sm text-muted-foreground">No NGOs registered yet.</p> : null}
-        {ngos.map((n) => (
+        {people.length === 0 ? <p className="p-2 text-sm text-muted-foreground">{emptyLabel}</p> : null}
+        {people.map((n) => (
           <button
             key={n.id}
             type="button"
@@ -257,7 +280,7 @@ function NgoChats({
               active === n.id ? "bg-primary text-primary-foreground" : "hover:bg-muted"
             }`}
           >
-            <span className="block truncate font-medium">{n.organisation || n.full_name || "NGO"}</span>
+            <span className="block truncate font-medium">{n.organisation || n.full_name || "Member"}</span>
             <span className="block truncate text-xs opacity-70">{n.email}</span>
           </button>
         ))}
@@ -265,14 +288,15 @@ function NgoChats({
       <div className="h-[30rem]">
         {active ? (
           <ChatBox
-            room={ngoRoom(active)}
+            key={active}
+            room={roomFor(active)}
             currentUserId={adminId}
             names={names}
-            title={`NGO chat · ${names[active] ?? "NGO"}`}
+            title={`Chat · ${names[active] ?? "Member"}`}
           />
         ) : (
           <div className="grid h-full place-items-center rounded-2xl border border-dashed border-border text-sm text-muted-foreground">
-            Pick an NGO to open the chat.
+            Click an email on the left to open the chat.
           </div>
         )}
       </div>

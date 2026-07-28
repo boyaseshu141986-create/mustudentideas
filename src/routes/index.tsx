@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, GraduationCap, HeartHandshake, Lightbulb, Users } from "lucide-react";
 import intro from "@/assets/intro.mp4.asset.json";
 import { SiteHeader } from "@/components/SiteHeader";
+import { WelcomeIntro } from "@/components/WelcomeIntro";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { HOME_FOR_ROLE } from "@/lib/app";
@@ -30,65 +31,57 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeIntro />
       <SiteHeader profile={profile} />
 
       <main>
-        <section className="relative overflow-hidden">
-          <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:py-20">
-            <div>
-              <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-primary uppercase">
-                Startup & Innovation Policy
-              </span>
-              <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-                Where Marwadi ideas turn into
-                <span className="text-primary"> funded projects</span>.
-              </h1>
-              <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
-                Students submit project links, mentors review and guide them, admin approves what goes
-                live, and NGOs discover work they can support or buy.
-              </p>
+        <section className="relative isolate overflow-hidden">
+          <video
+            className="absolute inset-0 -z-10 size-full object-cover"
+            src={intro.url}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="absolute inset-0 -z-10 bg-background/80 backdrop-blur-[2px]" />
 
-              <div className="mt-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
-                <p className="text-sm font-semibold text-foreground">Login in your account</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Create an account to enter the Student / Mentor space or the NGO space.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <Button asChild size="lg">
-                    <Link to="/auth" search={{ slide: "campus" }}>
-                      Login / Create account <ArrowRight className="ml-1 size-4" />
+          <div className="mx-auto w-full max-w-4xl px-4 py-20 text-center lg:py-28">
+            <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-primary uppercase">
+              Startup & Innovation Policy
+            </span>
+            <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              Where Marwadi ideas turn into
+              <span className="text-primary"> funded projects</span>.
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
+              Students submit project links, mentors review and guide them, admin approves what goes
+              live, and NGOs discover work they can support or buy.
+            </p>
+
+            <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-border bg-card/90 p-5 shadow-sm backdrop-blur">
+              <p className="text-sm font-semibold text-foreground">Login in your account</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Create an account to enter the Student / Mentor space or the NGO space.
+              </p>
+              <div className="mt-4 flex flex-wrap justify-center gap-3">
+                <Button asChild size="lg">
+                  <Link to="/auth" search={{ slide: "campus" }}>
+                    Login / Create account <ArrowRight className="ml-1 size-4" />
+                  </Link>
+                </Button>
+                {profile ? (
+                  <Button asChild size="lg" variant="outline">
+                    <Link to={HOME_FOR_ROLE[profile.role]}>Go to my dashboard</Link>
+                  </Button>
+                ) : (
+                  <Button asChild size="lg" variant="outline">
+                    <Link to="/auth" search={{ slide: "ngo" }}>
+                      NGO access
                     </Link>
                   </Button>
-                  {profile ? (
-                    <Button asChild size="lg" variant="outline">
-                      <Link to={HOME_FOR_ROLE[profile.role]}>Go to my dashboard</Link>
-                    </Button>
-                  ) : (
-                    <Button asChild size="lg" variant="outline">
-                      <Link to="/auth" search={{ slide: "ngo" }}>
-                        NGO access
-                      </Link>
-                    </Button>
-                  )}
-                </div>
+                )}
               </div>
-            </div>
-
-            <div className="relative">
-              <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-lg">
-                <video
-                  className="aspect-video w-full object-cover"
-                  src={intro.url}
-                  controls
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                />
-              </div>
-              <p className="mt-3 text-center text-xs text-muted-foreground">
-                Intro film — Startup & Innovation Policy
-              </p>
             </div>
           </div>
         </section>

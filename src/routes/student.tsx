@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles, useRoleGuard } from "@/hooks/useRoleGuard";
-import { helpRoom, youtubeId } from "@/lib/app";
+import { adminRoom, helpRoom, youtubeId } from "@/lib/app";
 
 export const Route = createFileRoute("/student")({
   ssr: false,
@@ -199,9 +199,29 @@ function ProjectsTab({
                 </div>
               ))}
             </div>
-            {activeMentor ? (
+            <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium">Admin</p>
+                <p className="truncate text-xs text-muted-foreground">Marwadi Innovation Hub admin</p>
+              </div>
+              <Button size="sm" variant="outline" onClick={() => setActiveMentor("admin")}>
+                Chat
+              </Button>
+            </div>
+            {activeMentor === "admin" ? (
               <div className="mt-4 h-[26rem]">
                 <ChatBox
+                  room={adminRoom(studentId)}
+                  currentUserId={studentId}
+                  names={names}
+                  title="Chat with Admin"
+                />
+              </div>
+            ) : null}
+            {activeMentor && activeMentor !== "admin" ? (
+              <div className="mt-4 h-[26rem]">
+                <ChatBox
+                  key={activeMentor}
                   room={helpRoom(studentId, activeMentor)}
                   currentUserId={studentId}
                   names={names}

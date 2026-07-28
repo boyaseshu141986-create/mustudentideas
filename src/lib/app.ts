@@ -28,6 +28,7 @@ export function emailMatchesRole(email: string, role: Role) {
 export const COMMUNITY_ROOM = "community";
 export const helpRoom = (studentId: string, mentorId: string) => `help-${studentId}-${mentorId}`;
 export const ngoRoom = (ngoId: string) => `ngo-${ngoId}`;
+export const adminRoom = (userId: string) => `admin-${userId}`;
 
 export function youtubeId(url: string): string | null {
   const match = url.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/);
