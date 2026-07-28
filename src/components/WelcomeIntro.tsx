@@ -49,6 +49,7 @@ export function WelcomeIntro() {
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
+      <style>{`@keyframes mu-letter-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }`}</style>
       <div className="px-6 text-center">
         {renderLine(
           LINE_ONE,
