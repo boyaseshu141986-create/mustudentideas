@@ -230,6 +230,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_project_views: {
+        Args: { _project_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "mentor" | "student" | "ngo"
