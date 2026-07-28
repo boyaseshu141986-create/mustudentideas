@@ -14,16 +14,226 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      idea_answers: {
+        Row: {
+          answer: string
+          author_id: string
+          created_at: string
+          id: string
+          idea_id: string
+        }
+        Insert: {
+          answer: string
+          author_id: string
+          created_at?: string
+          id?: string
+          idea_id: string
+        }
+        Update: {
+          answer?: string
+          author_id?: string
+          created_at?: string
+          id?: string
+          idea_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_answers_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ideas: {
+        Row: {
+          author_id: string
+          created_at: string
+          id: string
+          question: string
+          title: string
+        }
+        Insert: {
+          author_id: string
+          created_at?: string
+          id?: string
+          question: string
+          title: string
+        }
+        Update: {
+          author_id?: string
+          created_at?: string
+          id?: string
+          question?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          room: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          room: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          room?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          department: string | null
+          email: string
+          full_name: string
+          id: string
+          organisation: string | null
+          phone: string | null
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          department?: string | null
+          email: string
+          full_name?: string
+          id: string
+          organisation?: string | null
+          phone?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          organisation?: string | null
+          phone?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          instructions: string | null
+          project_link: string
+          status: Database["public"]["Enums"]["project_status"]
+          student_id: string
+          tech_stack: string
+          title: string
+          views: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          instructions?: string | null
+          project_link?: string
+          status?: Database["public"]["Enums"]["project_status"]
+          student_id: string
+          tech_stack?: string
+          title: string
+          views?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          instructions?: string | null
+          project_link?: string
+          status?: Database["public"]["Enums"]["project_status"]
+          student_id?: string
+          tech_stack?: string
+          title?: string
+          views?: number
+        }
+        Relationships: []
+      }
+      skill_videos: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          title: string
+          youtube_url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string
+          id?: string
+          title: string
+          youtube_url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          title?: string
+          youtube_url?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_access_room: { Args: { _room: string }; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "mentor" | "student" | "ngo"
+      project_status: "pending" | "accepted" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +360,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "mentor", "student", "ngo"],
+      project_status: ["pending", "accepted", "rejected"],
+    },
   },
 } as const
