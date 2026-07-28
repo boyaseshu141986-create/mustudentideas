@@ -29,9 +29,10 @@ export function WelcomeIntro() {
       {text.split("").map((ch, i) => (
         <span
           key={`${ch}-${i}`}
-          className="inline-block opacity-0"
+          className="inline-block"
           style={{
-            animation: `fade-in 0.45s ease-out forwards`,
+            opacity: 0,
+            animation: `mu-letter-in 0.45s ease-out forwards`,
             animationDelay: `${(offset + i) * STEP_MS}ms`,
           }}
         >
