@@ -43,7 +43,6 @@ function Index() {
             muted
             loop
             playsInline
-avoid-controls
           />
           <div className="absolute inset-0 -z-10 bg-background/80 backdrop-blur-[2px]" />
 
