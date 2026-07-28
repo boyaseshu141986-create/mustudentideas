@@ -21,6 +21,9 @@ export function SiteHeader({
   onOpenProfile?: () => void;
 }) {
   const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const showBack = pathname !== "/";
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -30,12 +33,24 @@ export function SiteHeader({
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logo.url} alt="Marwadi University" className="h-9 w-auto" />
-          <span className="hidden text-sm font-semibold tracking-[0.2em] text-muted-foreground uppercase sm:inline">
-            Innovation Hub
-          </span>
-        </Link>
+        <div className="flex items-center gap-2">
+          {showBack ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Go back"
+              onClick={() => router.history.back()}
+            >
+              <ArrowLeft className="size-5" />
+            </Button>
+          ) : null}
+          <Link to="/" className="flex items-center gap-3">
+            <img src={logo.url} alt="Marwadi University" className="h-9 w-auto" />
+            <span className="hidden text-sm font-semibold tracking-[0.2em] text-muted-foreground uppercase sm:inline">
+              Innovation Hub
+            </span>
+          </Link>
+        </div>
 
         {profile ? (
           <DropdownMenu>
