@@ -103,7 +103,31 @@ function Index() {
             ))}
           </div>
         </section>
+
+        <section className="border-t border-border bg-sidebar">
+          <div className="mx-auto w-full max-w-3xl px-4 py-16 text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-sidebar-foreground sm:text-3xl">
+              Ready to open your account?
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-sidebar-foreground/75">
+              Students and mentors use their Marwadi email. NGOs can register with any work email.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Button asChild size="lg" variant="secondary">
+                <Link to="/auth" search={{ slide: "campus" }}>
+                  Student / Mentor account <ArrowRight className="ml-1 size-4" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="secondary">
+                <Link to="/auth" search={{ slide: "ngo" }}>
+                  NGO account
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
+
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
         Marwadi University · Innovation Hub
