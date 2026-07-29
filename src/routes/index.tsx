@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import intro from "@/assets/intro.mp4.asset.json";
