@@ -28,6 +28,19 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { profile } = useAuth();
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    const start = () => setVideoReady(true);
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
+      .requestIdleCallback;
+    if (idle) {
+      idle(start);
+      return;
+    }
+    const t = window.setTimeout(start, 300);
+    return () => window.clearTimeout(t);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,17 +48,20 @@ function Index() {
       <SiteHeader profile={profile} />
 
       <main>
-        <section className="dark relative isolate overflow-hidden">
-          <video
-            className="absolute inset-0 -z-10 size-full object-cover"
-            src={intro.url}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
+        <section className="dark relative isolate overflow-hidden bg-neutral-950">
+          {videoReady ? (
+            <video
+              className="absolute inset-0 -z-10 size-full object-cover"
+              src={intro.url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : null}
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/45 via-background/25 to-background/70" />
+
 
           <div className="mx-auto w-full max-w-4xl px-4 py-20 text-center lg:py-28">
             <span className="inline-flex items-center rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-accent-foreground uppercase">
