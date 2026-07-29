@@ -143,6 +143,17 @@ function ProjectsTab({
     void load();
   }
 
+  async function removeProject(id: string) {
+    const { error } = await supabase.from("projects").delete().eq("id", id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Project removed");
+    void load();
+  }
+
+
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
       <form onSubmit={submit} className="space-y-3 rounded-2xl border border-border bg-card p-6">

@@ -54,9 +54,17 @@ function NgoPage() {
   }
 
   async function view(p: Project) {
-    await supabase.rpc("increment_project_views", { _project_id: p.id });
-    setProjects((prev) => prev.map((x) => (x.id === p.id ? { ...x, views: x.views + 1 } : x)));
     window.open(p.project_link, "_blank", "noopener,noreferrer");
+    await supabase.rpc("increment_project_views", { _project_id: p.id });
+  }
+
+  async function want(p: Project) {
+    await supabase.from("messages").insert({
+      room: ngoRoom(userId!),
+      sender_id: userId!,
+      content: `I want this project: ${p.title} — ${p.project_link}`,
+    });
+    document.getElementById("admin-chat")?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -77,18 +85,20 @@ function NgoPage() {
                 <p className="text-xs text-muted-foreground">By {names[p.student_id] ?? "Student"}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{p.description}</p>
                 <p className="mt-2 text-xs text-muted-foreground">Tech: {p.tech_stack || "—"}</p>
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-4 flex flex-wrap items-center gap-3">
                   <Button size="sm" onClick={() => void view(p)}>
-                    View project
+                    Open project link
                   </Button>
-                  <span className="text-xs text-muted-foreground">{p.views} views</span>
+                  <Button size="sm" variant="secondary" onClick={() => void want(p)}>
+                    I want this
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section>
+        <section id="admin-chat">
           <h2 className="text-base font-semibold">Chat with admin</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Interested in buying or partnering on a project? Message the admin team here.
@@ -106,3 +116,4 @@ function NgoPage() {
     </div>
   );
 }
+
