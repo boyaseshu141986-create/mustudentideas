@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, GraduationCap, HeartHandshake, Lightbulb, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import intro from "@/assets/intro.mp4.asset.json";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WelcomeIntro } from "@/components/WelcomeIntro";
