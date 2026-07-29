@@ -1,0 +1,1 @@
+CREATE POLICY "ideas update own or admin" ON public.ideas FOR UPDATE TO authenticated USING ((author_id = auth.uid()) OR public.has_role(auth.uid(),'admin')) WITH CHECK ((author_id = auth.uid()) OR public.has_role(auth.uid(),'admin'));
