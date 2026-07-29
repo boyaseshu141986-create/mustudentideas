@@ -48,24 +48,12 @@ function MentorPage() {
 
       <main className="mx-auto w-full max-w-6xl px-4 py-8">
         <h1 className="text-2xl font-bold tracking-tight">Mentor space</h1>
-        <Tabs defaultValue="chat" className="mt-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="chat">Community chat</TabsTrigger>
-            <TabsTrigger value="help">Student help</TabsTrigger>
+        <Tabs defaultValue="help" className="mt-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="help">Student chat</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="ideas">Ideas</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="chat" className="mt-6">
-            <div className="h-[calc(100vh-16rem)] min-h-[28rem]">
-              <ChatBox
-                room={COMMUNITY_ROOM}
-                currentUserId={userId}
-                names={names}
-                title="One chat box · Admin, students and mentors"
-              />
-            </div>
-          </TabsContent>
 
           <TabsContent value="help" className="mt-6">
             <HelpTab mentorId={userId} students={students} names={names} />
@@ -83,6 +71,7 @@ function MentorPage() {
     </div>
   );
 }
+
 
 function HelpTab({
   mentorId,
