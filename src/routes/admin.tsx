@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles, useRoleGuard } from "@/hooks/useRoleGuard";
-import { COMMUNITY_ROOM, adminRoom, ngoRoom, youtubeId } from "@/lib/app";
+import { adminRoom, ngoRoom, youtubeId } from "@/lib/app";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,

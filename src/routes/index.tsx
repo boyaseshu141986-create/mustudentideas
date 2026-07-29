@@ -35,7 +35,7 @@ function Index() {
       <SiteHeader profile={profile} />
 
       <main>
-        <section className="relative isolate overflow-hidden">
+        <section className="dark relative isolate overflow-hidden">
           <video
             className="absolute inset-0 -z-10 size-full object-cover"
             src={intro.url}
@@ -44,23 +44,23 @@ function Index() {
             loop
             playsInline
           />
-          <div className="absolute inset-0 -z-10 bg-background/80 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/45 via-background/25 to-background/70" />
 
           <div className="mx-auto w-full max-w-4xl px-4 py-20 text-center lg:py-28">
-            <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-primary uppercase">
-              Startup & Innovation Policy
+            <span className="inline-flex items-center rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-accent-foreground uppercase">
+              Startup &amp; Innovation Policy
             </span>
-            <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight text-foreground drop-shadow-lg sm:text-5xl lg:text-6xl">
               Where Marwadi ideas turn into
-              <span className="text-primary"> funded projects</span>.
+              <span className="text-accent"> funded projects</span>.
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
+            <p className="mx-auto mt-5 max-w-xl text-base text-foreground/85 drop-shadow sm:text-lg">
               Students submit project links, mentors review and guide them, admin approves what goes
               live, and NGOs discover work they can support or buy.
             </p>
 
-            <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-border bg-card/90 p-5 shadow-sm backdrop-blur">
-              <p className="text-sm font-semibold text-foreground">Login in your account</p>
+            <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-border/70 bg-card/70 p-5 shadow-xl backdrop-blur-md">
+              <p className="text-sm font-semibold text-card-foreground">Login in your account</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Create an account to enter the Student / Mentor space or the NGO space.
               </p>
@@ -85,6 +85,7 @@ function Index() {
             </div>
           </div>
         </section>
+
 
         <section className="border-t border-border bg-muted/40">
           <div className="mx-auto grid w-full max-w-7xl gap-4 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
