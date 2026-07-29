@@ -43,6 +43,7 @@ function Index() {
             muted
             loop
             playsInline
+            preload="auto"
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/45 via-background/25 to-background/70" />
 
@@ -58,9 +59,13 @@ function Index() {
               Students submit project links, mentors review and guide them, admin approves what goes
               live, and NGOs discover work they can support or buy.
             </p>
+          </div>
+        </section>
 
-            <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-border/70 bg-card/70 p-5 shadow-xl backdrop-blur-md">
-              <p className="text-sm font-semibold text-card-foreground">Login in your account</p>
+        <section className="border-t border-border bg-muted/40">
+          <div className="mx-auto w-full max-w-3xl px-4 py-14">
+            <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm">
+              <p className="text-base font-semibold text-card-foreground">Login in your account</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Create an account to enter the Student / Mentor space or the NGO space.
               </p>
@@ -83,26 +88,19 @@ function Index() {
                 )}
               </div>
             </div>
+
+            <div className="mt-10 text-center">
+              <h2 className="text-2xl font-bold tracking-tight">About the Marketplace</h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                The Marwadi University Campus Marketplace is an exclusive platform bridging the gap
+                between student innovators, faculty mentors, and industry partners. We empower
+                students to showcase their groundbreaking projects while providing businesses and
+                mentors with direct access to the next generation of tech talent.
+              </p>
+            </div>
           </div>
         </section>
 
-
-        <section className="border-t border-border bg-muted/40">
-          <div className="mx-auto grid w-full max-w-7xl gap-4 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { icon: GraduationCap, title: "Project submissions", text: "Title, description, tech stack and links — reviewed by admin." },
-              { icon: Lightbulb, title: "Ideas board", text: "Mentors post project questions, students answer and learn." },
-              { icon: Users, title: "Mentor help", text: "Chat directly with a mentor, emojis included." },
-              { icon: HeartHandshake, title: "NGO support", text: "NGOs browse approved work and chat with admin to back it." },
-            ].map((f) => (
-              <div key={f.title} className="rounded-2xl border border-border bg-card p-5">
-                <f.icon className="size-6 text-primary" />
-                <h2 className="mt-3 text-base font-semibold">{f.title}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
 
         <section className="border-t border-border bg-sidebar">
           <div className="mx-auto w-full max-w-3xl px-4 py-16 text-center">
