@@ -248,9 +248,17 @@ function ProjectsTab({
             <a href={p.project_link} target="_blank" rel="noreferrer" className="mt-1 block truncate text-xs text-primary underline">
               {p.project_link}
             </a>
-            <p className="mt-2 text-xs text-muted-foreground">{p.views} views</p>
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                Opened by {p.views} NGO{p.views === 1 ? "" : "s"}
+              </p>
+              <Button size="sm" variant="destructive" onClick={() => void removeProject(p.id)}>
+                Remove
+              </Button>
+            </div>
           </div>
         ))}
+
       </div>
     </div>
   );
