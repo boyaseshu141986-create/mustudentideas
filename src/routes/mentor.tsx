@@ -171,6 +171,7 @@ function MentorIdeas({ mentorId, names }: { mentorId: string; names: Record<stri
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const [i, a] = await Promise.all([
@@ -188,25 +189,51 @@ function MentorIdeas({ mentorId, names }: { mentorId: string; names: Record<stri
   async function post(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim() || !question.trim()) return;
-    const { error } = await supabase.from("ideas").insert({
-      author_id: mentorId,
+    const payload = {
       title: title.trim().slice(0, 150),
       question: question.trim().slice(0, 1000),
-    });
+    };
+    const { error } = editingId
+      ? await supabase.from("ideas").update(payload).eq("id", editingId)
+      : await supabase.from("ideas").insert({ author_id: mentorId, ...payload });
     if (error) {
       toast.error(error.message);
       return;
     }
     setTitle("");
     setQuestion("");
-    toast.success("Question posted");
+    setEditingId(null);
+    toast.success(editingId ? "Question updated" : "Question posted");
+    void load();
+  }
+
+  function startEdit(idea: Idea) {
+    setEditingId(idea.id);
+    setTitle(idea.title);
+    setQuestion(idea.question);
+  }
+
+  async function remove(id: string) {
+    const { error } = await supabase.from("ideas").delete().eq("id", id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (editingId === id) {
+      setEditingId(null);
+      setTitle("");
+      setQuestion("");
+    }
+    toast.success("Question removed");
     void load();
   }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
       <form onSubmit={post} className="space-y-3 rounded-2xl border border-border bg-card p-6">
-        <h2 className="text-base font-semibold">Ask a project question</h2>
+        <h2 className="text-base font-semibold">
+          {editingId ? "Edit your question" : "Ask a project question"}
+        </h2>
         <div className="space-y-1.5">
           <Label htmlFor="it">Title</Label>
           <Input id="it" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={150} />
@@ -215,7 +242,24 @@ function MentorIdeas({ mentorId, names }: { mentorId: string; names: Record<stri
           <Label htmlFor="iq">Question</Label>
           <Textarea id="iq" value={question} onChange={(e) => setQuestion(e.target.value)} rows={4} maxLength={1000} />
         </div>
-        <Button type="submit" className="w-full">Post question</Button>
+        <div className="flex gap-2">
+          <Button type="submit" className="flex-1">
+            {editingId ? "Save changes" : "Submit question"}
+          </Button>
+          {editingId ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setEditingId(null);
+                setTitle("");
+                setQuestion("");
+              }}
+            >
+              Cancel
+            </Button>
+          ) : null}
+        </div>
       </form>
 
       <div className="space-y-4">
@@ -224,6 +268,16 @@ function MentorIdeas({ mentorId, names }: { mentorId: string; names: Record<stri
             <h3 className="font-semibold">{idea.title}</h3>
             <p className="mt-1 text-sm text-muted-foreground">{idea.question}</p>
             <p className="mt-3 text-xs font-medium text-primary">Asked by {names[idea.author_id] ?? "Mentor"}</p>
+            {idea.author_id === mentorId ? (
+              <div className="mt-3 flex gap-2">
+                <Button size="sm" variant="outline" onClick={() => startEdit(idea)}>
+                  Edit
+                </Button>
+                <Button size="sm" variant="destructive" onClick={() => void remove(idea.id)}>
+                  Remove
+                </Button>
+              </div>
+            ) : null}
             <div className="mt-3 space-y-2">
               {answers
                 .filter((a) => a.idea_id === idea.id)
@@ -239,4 +293,5 @@ function MentorIdeas({ mentorId, names }: { mentorId: string; names: Record<stri
       </div>
     </div>
   );
+
 }
