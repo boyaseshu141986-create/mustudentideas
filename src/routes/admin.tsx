@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles, useRoleGuard } from "@/hooks/useRoleGuard";
-import { COMMUNITY_ROOM, adminRoom, ngoRoom, youtubeId } from "@/lib/app";
+import { adminRoom, ngoRoom, youtubeId } from "@/lib/app";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -62,11 +62,10 @@ function AdminPage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-8">
         <h1 className="text-2xl font-bold tracking-tight">Admin console</h1>
         <Tabs defaultValue="projects" className="mt-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="videos">Skill videos</TabsTrigger>
             <TabsTrigger value="students">Student chats</TabsTrigger>
-            <TabsTrigger value="chat">Community chat</TabsTrigger>
             <TabsTrigger value="ngo">NGO chats</TabsTrigger>
           </TabsList>
 
@@ -85,16 +84,6 @@ function AdminPage() {
               roomFor={adminRoom}
             />
           </TabsContent>
-          <TabsContent value="chat" className="mt-6">
-            <div className="h-[calc(100vh-16rem)] min-h-[28rem]">
-              <ChatBox
-                room={COMMUNITY_ROOM}
-                currentUserId={userId}
-                names={names}
-                title="One chat box · Admin, students and mentors"
-              />
-            </div>
-          </TabsContent>
           <TabsContent value="ngo" className="mt-6">
             <DirectChats
               adminId={userId}
@@ -105,6 +94,7 @@ function AdminPage() {
             />
           </TabsContent>
         </Tabs>
+
       </main>
     </div>
   );

@@ -5,14 +5,20 @@ const LINE_TWO = "MU STUDENT IDEAS";
 
 const STEP_MS = 110; // per letter
 const HOLD_MS = 4000; // stay 4s after the animation finishes
+const SESSION_KEY = "mu-welcome-shown";
 
 export function WelcomeIntro() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [fading, setFading] = useState(false);
 
   const total = LINE_ONE.length + LINE_TWO.length;
 
   useEffect(() => {
+    // Only on a fresh visit to the site — not when navigating back to home.
+    if (sessionStorage.getItem(SESSION_KEY)) return;
+    sessionStorage.setItem(SESSION_KEY, "1");
+    setVisible(true);
+
     const typingMs = total * STEP_MS;
     const fadeTimer = setTimeout(() => setFading(true), typingMs + HOLD_MS);
     const hideTimer = setTimeout(() => setVisible(false), typingMs + HOLD_MS + 700);
@@ -45,7 +51,7 @@ export function WelcomeIntro() {
   return (
     <div
       aria-hidden
-      className={`fixed inset-0 z-[100] grid place-items-center bg-background transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[100] grid place-items-center bg-sidebar transition-opacity duration-700 ${
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
@@ -54,12 +60,12 @@ export function WelcomeIntro() {
         {renderLine(
           LINE_ONE,
           0,
-          "block text-sm font-semibold tracking-[0.5em] text-muted-foreground uppercase sm:text-lg",
+          "block text-sm font-semibold tracking-[0.5em] text-accent uppercase sm:text-lg",
         )}
         {renderLine(
           LINE_TWO,
           LINE_ONE.length,
-          "mt-4 block text-3xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl",
+          "mt-4 block text-3xl font-bold tracking-tight text-sidebar-foreground sm:text-5xl lg:text-6xl",
         )}
       </div>
     </div>
