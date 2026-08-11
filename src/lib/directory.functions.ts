@@ -37,17 +37,16 @@ export const getMyProfile = createServerFn({ method: "POST" })
 export const listMemberEmails = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    if (!isAdmin) {
-      const own = await supabaseAdmin.from("profiles").select("role").eq("id", context.userId).maybeSingle();
-      if (own.data?.role !== "admin") throw new Error("Forbidden");
-    }
+    const role = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (!role.data) throw new Error("Forbidden");
 
     const { data } = await supabaseAdmin.from("profiles").select("id, email");
     return (data ?? []) as { id: string; email: string }[];
