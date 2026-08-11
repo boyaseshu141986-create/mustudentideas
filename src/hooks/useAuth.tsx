@@ -1,17 +1,18 @@
 import { useEffect, useState, useCallback } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getMyProfile } from "@/lib/directory.functions";
 import type { Role } from "@/lib/app";
 
 export type Profile = {
   id: string;
-  email: string;
+  email?: string;
   full_name: string;
   role: Role;
   department: string | null;
   organisation: string | null;
-  phone: string | null;
-  bio: string | null;
+  phone?: string | null;
+  bio?: string | null;
 };
 
 export function useAuth() {
@@ -19,27 +20,13 @@ export function useAuth() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const loadProfile = useCallback(async (s: Session) => {
-    const { data } = await supabase.from("profiles").select("*").eq("id", s.user.id).maybeSingle();
-    if (data) {
-      setProfile(data as Profile);
-      return;
+  const loadProfile = useCallback(async () => {
+    try {
+      const data = await getMyProfile();
+      setProfile((data as Profile) ?? null);
+    } catch {
+      setProfile(null);
     }
-    const meta = (s.user.user_metadata ?? {}) as Record<string, string>;
-    const inserted = await supabase
-      .from("profiles")
-      .insert({
-        id: s.user.id,
-        email: s.user.email ?? "",
-        full_name: meta.full_name ?? "",
-        role: (meta.role as Role) ?? "student",
-        department: meta.department ?? null,
-        organisation: meta.organisation ?? null,
-        phone: meta.phone ?? null,
-      })
-      .select()
-      .maybeSingle();
-    setProfile((inserted.data as Profile) ?? null);
   }, []);
 
   useEffect(() => {
@@ -51,7 +38,7 @@ export function useAuth() {
         return;
       }
       setTimeout(() => {
-        loadProfile(s).finally(() => setLoading(false));
+        loadProfile().finally(() => setLoading(false));
       }, 0);
     });
 
@@ -60,7 +47,7 @@ export function useAuth() {
       if (!data.session) {
         setLoading(false);
       } else {
-        loadProfile(data.session).finally(() => setLoading(false));
+        loadProfile().finally(() => setLoading(false));
       }
     });
 
@@ -68,7 +55,7 @@ export function useAuth() {
   }, [loadProfile]);
 
   const refresh = useCallback(async () => {
-    if (session) await loadProfile(session);
+    if (session) await loadProfile();
   }, [session, loadProfile]);
 
   return { session, profile, loading, refresh, userId: session?.user.id ?? null };
