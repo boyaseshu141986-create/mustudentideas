@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles, useRoleGuard } from "@/hooks/useRoleGuard";
+import { listMemberEmails } from "@/lib/directory.functions";
 import { adminRoom, ngoRoom, youtubeId } from "@/lib/app";
 
 export const Route = createFileRoute("/admin")({
@@ -46,6 +47,17 @@ function AdminPage() {
   const { profile, userId, refresh } = useRoleGuard("admin");
   const { profiles, names } = useProfiles();
   const [showProfile, setShowProfile] = useState(false);
+  const [emails, setEmails] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    listMemberEmails()
+      .then((rows) => {
+        const map: Record<string, string> = {};
+        for (const r of rows) map[r.id] = r.email;
+        setEmails(map);
+      })
+      .catch(() => setEmails({}));
+  }, []);
 
   if (!profile || !userId) {
     return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">Loading…</div>;
@@ -80,6 +92,7 @@ function AdminPage() {
               adminId={userId}
               people={students}
               names={names}
+              emails={emails}
               emptyLabel="No students registered yet."
               roomFor={adminRoom}
             />
@@ -89,6 +102,7 @@ function AdminPage() {
               adminId={userId}
               people={ngos}
               names={names}
+              emails={emails}
               emptyLabel="No NGOs registered yet."
               roomFor={ngoRoom}
             />
@@ -240,12 +254,13 @@ function VideosTab({ adminId }: { adminId: string }) {
   );
 }
 
-type ChatPerson = { id: string; full_name: string; email: string; organisation: string | null };
+type ChatPerson = { id: string; full_name: string; organisation: string | null };
 
 function DirectChats({
   adminId,
   people,
   names,
+  emails,
   emptyLabel,
   roomFor,
 }: {
@@ -271,7 +286,7 @@ function DirectChats({
             }`}
           >
             <span className="block truncate font-medium">{n.organisation || n.full_name || "Member"}</span>
-            <span className="block truncate text-xs opacity-70">{n.email}</span>
+            <span className="block truncate text-xs opacity-70">{emails[n.id] ?? ""}</span>
           </button>
         ))}
       </div>

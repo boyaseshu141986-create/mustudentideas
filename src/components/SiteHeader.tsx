@@ -57,10 +57,10 @@ export function SiteHeader({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="gap-2">
                 <span className="grid size-6 place-items-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
-                  {(profile.full_name || profile.email).charAt(0).toUpperCase()}
+                  {(profile.full_name || profile.email || "M").charAt(0).toUpperCase()}
                 </span>
                 <span className="hidden max-w-[9rem] truncate sm:inline">
-                  {profile.full_name || profile.email}
+                  {profile.full_name || profile.email || "Member"}
                 </span>
               </Button>
             </DropdownMenuTrigger>
