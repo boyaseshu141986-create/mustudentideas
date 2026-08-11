@@ -219,50 +219,10 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          department: string | null
-          full_name: string | null
-          id: string | null
-          organisation: string | null
-          role: Database["public"]["Enums"]["app_role"] | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          department?: string | null
-          full_name?: string | null
-          id?: string | null
-          organisation?: string | null
-          role?: Database["public"]["Enums"]["app_role"] | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          department?: string | null
-          full_name?: string | null
-          id?: string | null
-          organisation?: string | null
-          role?: Database["public"]["Enums"]["app_role"] | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      can_access_room: { Args: { _room: string }; Returns: boolean }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      increment_project_views: {
-        Args: { _project_id: string }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       app_role: "admin" | "mentor" | "student" | "ngo"
