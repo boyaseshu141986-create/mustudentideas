@@ -88,7 +88,7 @@ function ProjectsTab({
   names,
 }: {
   studentId: string;
-  mentors: { id: string; email: string; full_name: string }[];
+  mentors: { id: string; full_name: string; department: string | null }[];
   names: Record<string, string>;
 }) {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -193,7 +193,7 @@ function ProjectsTab({
 
         {showMentors ? (
           <div className="rounded-2xl border border-border bg-card p-4">
-            <p className="text-sm font-semibold">Mentor emails</p>
+            <p className="text-sm font-semibold">Mentors</p>
             <div className="mt-3 space-y-2">
               {mentors.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No mentors registered yet.</p>

@@ -79,7 +79,7 @@ function HelpTab({
   names,
 }: {
   mentorId: string;
-  students: { id: string; full_name: string; email: string }[];
+  students: { id: string; full_name: string; department: string | null }[];
   names: Record<string, string>;
 }) {
   const [active, setActive] = useState<string | null>(null);
