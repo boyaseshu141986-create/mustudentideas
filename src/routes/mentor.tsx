@@ -98,7 +98,7 @@ function HelpTab({
             }`}
           >
             <span className="block truncate font-medium">{s.full_name || "Student"}</span>
-            <span className="block truncate text-xs opacity-70">{s.email}</span>
+            <span className="block truncate text-xs opacity-70">{s.department || "Student"}</span>
           </button>
         ))}
       </div>
