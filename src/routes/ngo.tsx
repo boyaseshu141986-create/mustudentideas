@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfiles, useRoleGuard } from "@/hooks/useRoleGuard";
 import { ngoRoom } from "@/lib/app";
+import { incrementProjectView } from "@/lib/directory.functions";
 
 export const Route = createFileRoute("/ngo")({
   ssr: false,
@@ -55,7 +56,7 @@ function NgoPage() {
 
   async function view(p: Project) {
     window.open(p.project_link, "_blank", "noopener,noreferrer");
-    await supabase.rpc("increment_project_views", { _project_id: p.id });
+    await incrementProjectView({ data: { projectId: p.id } });
   }
 
   async function want(p: Project) {

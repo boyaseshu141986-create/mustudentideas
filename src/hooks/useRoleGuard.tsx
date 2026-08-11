@@ -28,12 +28,12 @@ export function useProfiles() {
   useEffect(() => {
     supabase
       .from("profiles")
-      .select("*")
+      .select("id, full_name, role, department, organisation, avatar_url")
       .then(({ data }) => setProfiles((data ?? []) as Profile[]));
   }, []);
 
   const names: Record<string, string> = {};
-  for (const p of profiles) names[p.id] = p.full_name || p.email;
+  for (const p of profiles) names[p.id] = p.full_name || "Member";
 
   return { profiles, names };
 }

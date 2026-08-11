@@ -79,7 +79,7 @@ function HelpTab({
   names,
 }: {
   mentorId: string;
-  students: { id: string; full_name: string; email: string }[];
+  students: { id: string; full_name: string; department: string | null }[];
   names: Record<string, string>;
 }) {
   const [active, setActive] = useState<string | null>(null);
@@ -98,7 +98,7 @@ function HelpTab({
             }`}
           >
             <span className="block truncate font-medium">{s.full_name || "Student"}</span>
-            <span className="block truncate text-xs opacity-70">{s.email}</span>
+            <span className="block truncate text-xs opacity-70">{s.department || "Student"}</span>
           </button>
         ))}
       </div>
