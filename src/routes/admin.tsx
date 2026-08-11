@@ -267,6 +267,7 @@ function DirectChats({
   adminId: string;
   people: ChatPerson[];
   names: Record<string, string>;
+  emails: Record<string, string>;
   emptyLabel: string;
   roomFor: (id: string) => string;
 }) {
