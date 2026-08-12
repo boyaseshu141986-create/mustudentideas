@@ -23,12 +23,12 @@ import {
 
 const searchSchema = z.object({
   slide: z.enum(["campus", "ngo"]).catch("campus"),
-  next: z.string().catch(""),
+  next: z.string().optional(),
 });
 
 /** Only same-origin relative paths may be used as a post-login redirect. */
-function safeNext(next: string): string | null {
-  return next.startsWith("/") && !next.startsWith("//") ? next : null;
+function safeNext(next: string | undefined): string | null {
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : null;
 }
 
 export const Route = createFileRoute("/auth")({
