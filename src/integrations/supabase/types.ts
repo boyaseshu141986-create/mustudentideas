@@ -222,17 +222,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      list_directory: {
-        Args: never
-        Returns: {
-          avatar_url: string
-          department: string
-          full_name: string
-          id: string
-          organisation: string
-          role: Database["public"]["Enums"]["app_role"]
-        }[]
-      }
+      [_ in never]: never
     }
     Enums: {
       app_role: "admin" | "mentor" | "student" | "ngo"
