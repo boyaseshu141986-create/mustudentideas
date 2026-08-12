@@ -33,6 +33,17 @@ export const getMyProfile = createServerFn({ method: "POST" })
     return inserted.data ?? null;
   });
 
+/** Safe member directory (no email/phone/bio) for signed-in users. */
+export const listDirectory = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async () => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin
+      .from("profiles")
+      .select("id, full_name, role, department, organisation, avatar_url");
+    return data ?? [];
+  });
+
 /** Admin-only: contact emails for the member lists in the admin console. */
 export const listMemberEmails = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

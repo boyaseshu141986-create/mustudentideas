@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { listDirectory } from "@/lib/directory.functions";
 import { useAuth, type Profile } from "@/hooks/useAuth";
 import { HOME_FOR_ROLE, type Role } from "@/lib/app";
 
@@ -26,10 +26,9 @@ export function useProfiles() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
-    supabase
-      .from("profiles")
-      .select("id, full_name, role, department, organisation, avatar_url")
-      .then(({ data }) => setProfiles((data ?? []) as Profile[]));
+    listDirectory()
+      .then((data) => setProfiles((data ?? []) as Profile[]))
+      .catch(() => setProfiles([]));
   }, []);
 
   const names: Record<string, string> = {};
