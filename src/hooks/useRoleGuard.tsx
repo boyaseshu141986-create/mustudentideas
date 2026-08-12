@@ -26,10 +26,9 @@ export function useProfiles() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
-    supabase
-      .from("profiles")
-      .select("id, full_name, role, department, organisation, avatar_url")
-      .then(({ data }) => setProfiles((data ?? []) as Profile[]));
+    listDirectory()
+      .then((data) => setProfiles((data ?? []) as Profile[]))
+      .catch(() => setProfiles([]));
   }, []);
 
   const names: Record<string, string> = {};
