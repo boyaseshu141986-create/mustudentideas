@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.2",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://dimnvnioxxdscnlkeuwl.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "connect-grow",
+      "version": "0.1.0",
+      "title": "Connect & Grow"
+    },
+    "tools": [
+      {
+        "name": "list_projects",
+        "title": "List projects",
+        "description": "List student projects visible to the signed-in member (own submissions plus approved projects).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "submit_project",
+        "title": "Submit a project",
+        "description": "Submit a new project for admin review as the signed-in student (title, description, tech stack and link).",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 150,
+              "description": "Project title."
+            },
+            "description": {
+              "default": "",
+              "description": "What the project does.",
+              "type": "string",
+              "maxLength": 2000
+            },
+            "tech_stack": {
+              "default": "",
+              "description": "Technologies used.",
+              "type": "string",
+              "maxLength": 300
+            },
+            "project_link": {
+              "default": "",
+              "description": "Public link to the project.",
+              "type": "string",
+              "maxLength": 500
+            },
+            "instructions": {
+              "description": "Transfer instructions for partners.",
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "title"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_ideas",
+        "title": "List idea questions",
+        "description": "List mentor idea questions and the answers posted by members.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_skill_videos",
+        "title": "List skill learning videos",
+        "description": "List the skill-learning videos published for students.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

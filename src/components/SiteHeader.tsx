@@ -83,7 +83,7 @@ export function SiteHeader({
           </DropdownMenu>
         ) : (
           <Button asChild size="sm">
-            <Link to="/auth">Login / Create account</Link>
+            <Link to="/auth" search={{ slide: "campus" }}>Login / Create account</Link>
           </Button>
         )}
       </div>
