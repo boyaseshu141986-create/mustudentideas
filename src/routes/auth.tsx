@@ -50,13 +50,19 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { slide } = Route.useSearch();
+  const { slide, next } = Route.useSearch();
   const navigate = useNavigate();
   const { profile, session } = useAuth();
 
   useEffect(() => {
-    if (profile) navigate({ to: HOME_FOR_ROLE[profile.role], replace: true });
-  }, [profile, navigate]);
+    if (!profile) return;
+    const target = safeNext(next);
+    if (target) {
+      window.location.href = target;
+      return;
+    }
+    navigate({ to: HOME_FOR_ROLE[profile.role], replace: true });
+  }, [profile, navigate, next]);
 
   return (
     <div className="min-h-screen bg-background">
