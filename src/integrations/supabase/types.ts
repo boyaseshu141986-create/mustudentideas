@@ -219,39 +219,20 @@ export type Database = {
       }
     }
     Views: {
-      profiles_directory: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          department: string | null
-          full_name: string | null
-          id: string | null
-          organisation: string | null
-          role: Database["public"]["Enums"]["app_role"] | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          department?: string | null
-          full_name?: string | null
-          id?: string | null
-          organisation?: string | null
-          role?: Database["public"]["Enums"]["app_role"] | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          department?: string | null
-          full_name?: string | null
-          id?: string | null
-          organisation?: string | null
-          role?: Database["public"]["Enums"]["app_role"] | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      list_directory: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          department: string
+          full_name: string
+          id: string
+          organisation: string
+          role: Database["public"]["Enums"]["app_role"]
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "mentor" | "student" | "ngo"
