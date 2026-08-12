@@ -51,7 +51,7 @@ export function WelcomeIntro() {
   return (
     <div
       aria-hidden
-      className={`fixed inset-0 z-[100] grid place-items-center bg-sidebar transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[100] grid place-items-center bg-transparent transition-opacity duration-700 ${
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
