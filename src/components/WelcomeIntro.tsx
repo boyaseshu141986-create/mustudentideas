@@ -51,12 +51,12 @@ export function WelcomeIntro() {
   return (
     <div
       aria-hidden
-      className={`fixed inset-0 z-[100] grid place-items-center bg-sidebar transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[100] grid place-items-center bg-transparent transition-opacity duration-700 ${
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
       <style>{`@keyframes mu-letter-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }`}</style>
-      <div className="px-6 text-center">
+      <div className="px-6 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
         {renderLine(
           LINE_ONE,
           0,
