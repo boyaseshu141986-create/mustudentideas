@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { listDirectory } from "@/lib/directory.functions";
 import { useAuth, type Profile } from "@/hooks/useAuth";
 import { HOME_FOR_ROLE, type Role } from "@/lib/app";
 
